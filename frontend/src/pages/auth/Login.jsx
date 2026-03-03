@@ -51,7 +51,7 @@ export default function Login() {
               ))}
             </div>
             <div className="panel-footer">
-              Loved by 1200+ students daily
+              Loved by students across the campus. Made with ❤️ by the CanteenXpress Team.
             </div>
           </div>
         </div>
