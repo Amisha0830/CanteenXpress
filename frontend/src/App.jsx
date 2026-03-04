@@ -5,9 +5,9 @@ import AppRoutes from "./routes/AppRoutes";
 export default function App() {
   return (
     <AuthProvider>
-      <CartProvider>        {/* add this */}
+      <CartProvider>        
         <AppRoutes />
-      </CartProvider>       {/* add this */}
+      </CartProvider>       
     </AuthProvider>
   );
 }
