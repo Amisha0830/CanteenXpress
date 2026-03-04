@@ -6,6 +6,10 @@ import { formatCurrency } from "../../utils/formatCurrency";
 import orderService from "../../services/orderService";
 import Toast from "../../components/common/Toast";
 
+const BACKEND_URL = import.meta.env.VITE_API_URL
+  ? import.meta.env.VITE_API_URL.replace("/api", "")
+  : "http://localhost:5000";
+
 const Cart = () => {
   const { cartItems, clearCart, getCartTotal } = useContext(CartContext);
   const [loading, setLoading] = useState(false);
@@ -15,6 +19,10 @@ const Cart = () => {
   const subtotal = getCartTotal();
   const tax = subtotal * 0.05;
   const total = subtotal + tax;
+
+  const goHome = () => {
+    window.location.href = `${BACKEND_URL}/home`; // ✅ back to EJS home
+  };
 
   const handleCheckout = async () => {
     if (cartItems.length === 0) return;
@@ -46,7 +54,7 @@ const Cart = () => {
           <h2 className="text-2xl font-bold text-gray-700 mb-2">Your cart is empty</h2>
           <p className="text-gray-500 mb-6">Looks like you haven't added anything yet.</p>
           <button
-            onClick={() => navigate("/")}
+            onClick={goHome} // ✅ goes to EJS home
             className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg transition"
           >
             Browse Menu
@@ -116,7 +124,7 @@ const Cart = () => {
               </button>
 
               <button
-                onClick={() => navigate("/")}
+                onClick={goHome} // ✅ goes to EJS home
                 className="mt-3 w-full text-sm text-gray-500 hover:text-orange-500 text-center transition"
               >
                 ← Continue Shopping

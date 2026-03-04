@@ -1,4 +1,4 @@
-const Order = require("../models/Order");  // ← this is correct
+const Order = require("../models/Order");
 
 const createOrder = async (req, res) => {
   try {
@@ -9,7 +9,7 @@ const createOrder = async (req, res) => {
     }
 
     const order = await Order.create({
-      user: req.user._id,
+      user: req.user.id, // ✅ fixed: was req.user._id, middleware sets req.user.id
       items,
       totalAmount,
       status: "pending",
@@ -23,7 +23,7 @@ const createOrder = async (req, res) => {
 
 const getMyOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id })
+    const orders = await Order.find({ user: req.user.id }) // ✅ fixed
       .sort({ createdAt: -1 });
 
     res.json(orders);

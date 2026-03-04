@@ -35,16 +35,7 @@ export default function AppRoutes() {
         }
       />
 
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <div style={{ color: "#fff", padding: 40 }}>
-              🏠 Home - coming soon
-            </div>
-          </ProtectedRoute>
-        }
-      />
+      
 
       <Route
         path="/admin/dashboard"

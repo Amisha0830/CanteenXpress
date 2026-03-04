@@ -10,45 +10,51 @@ const aboutController = {
         {
           icon: "🍽️",
           title: "Browse Menu",
-          description: "Explore a wide variety of daily meals, snacks, and beverages across multiple categories.",
+          description:
+            "Explore a wide variety of daily meals, snacks, and beverages across multiple categories.",
         },
         {
           icon: "🛒",
           title: "Easy Cart",
-          description: "Add items, adjust quantities, and checkout in seconds with campus credits.",
+          description:
+            "Add items, adjust quantities, and checkout in seconds with campus credits.",
         },
         {
           icon: "📦",
           title: "Track Orders",
-          description: "Get real-time status updates on your order from kitchen to counter.",
+          description:
+            "Get real-time status updates on your order from kitchen to counter.",
         },
         {
           icon: "⚡",
           title: "Skip The Queue",
-          description: "Order ahead during lecture breaks and pick up when it's ready — zero wait.",
+          description:
+            "Order ahead during lecture breaks and pick up when it's ready — zero wait.",
         },
         {
           icon: "💸",
           title: "Student Offers",
-          description: "Exclusive discounts and combo deals crafted for student budgets.",
+          description:
+            "Exclusive discounts and combo deals crafted for student budgets.",
         },
         {
           icon: "🔐",
           title: "Secure Login",
-          description: "Role-based access for students and canteen admins, secured with JWT.",
+          description:
+            "Role-based access for students and canteen admins, secured with JWT.",
         },
       ],
       team: [
-        { name: "Aryan Sharma",  role: "Full Stack Developer" },
-        { name: "Priya Mehta",   role: "UI/UX Designer"       },
-        { name: "Rohit Das",     role: "Backend Engineer"      },
+        { name: "Aryan Sharma", role: "Full Stack Developer" },
+        { name: "Priya Mehta", role: "UI/UX Designer" },
+        { name: "Rohit Das", role: "Backend Engineer" },
       ],
       builtWith: ["React.js", "Node.js", "Express.js", "MongoDB", "EJS"],
       stats: [
-        { value: "500+", label: "Daily Orders"    },
+        { value: "500+", label: "Daily Orders" },
         { value: "20min", label: "Avg Ready Time" },
-        { value: "4.8★",  label: "Student Rating" },
-        { value: "100%",  label: "Fresh Food"     },
+        { value: "4.8★", label: "Student Rating" },
+        { value: "100%", label: "Fresh Food" },
       ],
     };
 
@@ -62,33 +68,44 @@ const aboutController = {
 
 // ─────────────────────────────────────────────
 function renderAboutPage(data) {
-
-  const featuresHTML = data.features.map((f) => `
+  const featuresHTML = data.features
+    .map(
+      (f) => `
     <div class="feature-card">
       <div class="feature-icon">${f.icon}</div>
       <h3 class="feature-title">${f.title}</h3>
       <p class="feature-desc">${f.description}</p>
-    </div>`
-  ).join("");
+    </div>`,
+    )
+    .join("");
 
-  const teamHTML = data.team.map((m) => `
+  const teamHTML = data.team
+    .map(
+      (m) => `
     <div class="team-card">
       <div class="team-avatar">${m.name.charAt(0)}</div>
       <h4 class="team-name">${m.name}</h4>
       <span class="team-role">${m.role}</span>
-    </div>`
-  ).join("");
+    </div>`,
+    )
+    .join("");
 
-  const techHTML = data.builtWith.map((t) => `
-    <span class="tech-badge">${t}</span>`
-  ).join("");
+  const techHTML = data.builtWith
+    .map(
+      (t) => `
+    <span class="tech-badge">${t}</span>`,
+    )
+    .join("");
 
-  const statsHTML = data.stats.map((s) => `
+  const statsHTML = data.stats
+    .map(
+      (s) => `
     <div class="stat-item">
       <div class="stat-value">${s.value}</div>
       <div class="stat-label">${s.label}</div>
-    </div>`
-  ).join("");
+    </div>`,
+    )
+    .join("");
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -961,16 +978,23 @@ function renderAboutPage(data) {
         </div>
 
         <!-- Cart icon -->
-        <a href="/cart" class="nav-cart-btn">
+        <a href="http://localhost:3000/cart" class="nav-cart-btn">
           <i class="fas fa-shopping-cart"></i>
           <span class="nav-cart-count" id="navCartCount">0</span>
         </a>
 
         <!-- Auth buttons (shown when not logged in) -->
-        <div class="auth-buttons" id="authButtons">
-          <a href="/login"  class="btn-login">Login</a>
-          <a href="/signup" class="btn btn-primary" style="padding:10px 22px;font-size:14px;display:inline-flex;align-items:center;background:var(--primary);color:white;border-radius:999px;font-weight:600;font-family:'Open Sans',sans-serif;">Sign Up</a>
-        </div>
+<div class="auth-buttons" id="authButtons">
+  <a href="http://localhost:3000/login" class="btn-login">Login</a>
+  <a href="http://localhost:3000/register" class="btn-signup-nav">Sign Up</a>
+</div>
+<div class="user-section" id="userSection" style="display:none;align-items:center;gap:10px;">
+  <div class="user-pill" style="display:flex;align-items:center;gap:9px;cursor:pointer;padding:5px 12px 5px 5px;border-radius:999px;border:1.5px solid #EBEBEB;">
+    <div class="user-avatar" id="userAvatar" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#FF6B35,#FF8A65);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;">U</div>
+    <span id="userNameDisplay" style="font-weight:600;font-size:13.5px;">User</span>
+  </div>
+  <button onclick="logout()" style="font-size:13px;font-weight:600;color:#636E72;padding:7px 14px;border-radius:999px;border:1.5px solid #EBEBEB;background:none;cursor:pointer;">Logout</button>
+</div>
 
         <!-- Mobile Toggle -->
         <button class="mobile-toggle" onclick="toggleMobileMenu()">
@@ -1001,7 +1025,8 @@ function renderAboutPage(data) {
       <li><a href="/contact" class="mobile-nav-link"><i class="fas fa-envelope"></i><span>Contact</span></a></li>
       <li><a href="/login"   class="mobile-nav-link"><i class="fas fa-sign-in-alt"></i><span>Login</span></a></li>
     </ul>
-    <a href="/cart" class="mobile-cart-row">
+    <a href="http://localhost:3000/cart" class="mobile-cart-row">
+
       <div style="display:flex;align-items:center;gap:10px;">
         <i class="fas fa-shopping-cart"></i> My Cart
       </div>
@@ -1137,41 +1162,37 @@ function renderAboutPage(data) {
     </div>
   </footer>
 
-  <script>
-    // Mobile Menu
-    function toggleMobileMenu() {
-      document.getElementById('mobileMenu').classList.add('active');
-      document.getElementById('overlay').classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeMobileMenu() {
-      document.getElementById('mobileMenu').classList.remove('active');
-      document.getElementById('overlay').classList.remove('active');
-      document.body.style.overflow = '';
-    }
+ // Auth check
+const REACT_URL = "http://localhost:3000";
+const API_URL = "http://localhost:5000/api";
 
-    // Navbar shadow on scroll
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', function () {
-      if (window.pageYOffset > 10) {
-        navbar.style.background = 'rgba(255,255,255,0.98)';
-        navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
-      } else {
-        navbar.style.background = 'rgba(255,255,255,0.95)';
-        navbar.style.boxShadow = 'none';
-      }
+async function initAuth() {
+  const token = localStorage.getItem("canteen_token");
+  if (!token) {
+    document.getElementById("authButtons").style.display = "flex";
+    document.getElementById("userSection").style.display = "none";
+    return;
+  }
+  try {
+    const res = await fetch(API_URL + "/auth/me", {
+      headers: { Authorization: "Bearer " + token }
     });
+    const data = await res.json();
+    if (data.user) {
+      document.getElementById("authButtons").style.display = "none";
+      document.getElementById("userSection").style.display = "flex";
+      document.getElementById("userNameDisplay").textContent = data.user.name.split(" ")[0];
+      document.getElementById("userAvatar").textContent = data.user.name[0].toUpperCase();
+    } else { logout(); }
+  } catch(e) { logout(); }
+}
 
-    // Search
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-      searchInput.addEventListener('keyup', function(e) {
-        if (e.key === 'Enter' && this.value.trim()) {
-          window.location.href = '/menu?q=' + encodeURIComponent(this.value.trim());
-        }
-      });
-    }
-  </script>
+function logout() {
+  localStorage.removeItem("canteen_token");
+  window.location.href = REACT_URL + "/login";
+}
+
+document.addEventListener("DOMContentLoaded", initAuth);
 
 </body>
 </html>`;

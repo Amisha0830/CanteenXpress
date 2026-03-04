@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -12,6 +11,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  // ✅ THIS WAS MISSING — caused the form to crash
   const handleChange = (e) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -21,7 +21,13 @@ export default function Login() {
     setLoading(true);
     try {
       const user = await login(form.email, form.password);
-      navigate(user.role === "admin" ? "/admin/dashboard" : "/");
+
+      if (user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        window.location.href = "http://localhost:5000/home"; // ✅ redirect to EJS
+      }
+
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong");
     } finally {
@@ -31,7 +37,6 @@ export default function Login() {
 
   return (
     <div className="auth-root">
-      {/* Background blobs */}
       <div className="blob blob-1" />
       <div className="blob blob-2" />
       <div className="blob blob-3" />
@@ -56,7 +61,7 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Right Panel - Form */}
+        {/* Right Panel */}
         <div className="auth-panel-right">
           <div className="form-wrapper">
             <div className="form-header">
@@ -192,7 +197,6 @@ export default function Login() {
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* LEFT PANEL */
         .auth-panel-left {
           flex: 1;
           background: linear-gradient(145deg, #ff6b2b 0%, #c94b4b 50%, #8b1a1a 100%);
@@ -281,7 +285,6 @@ export default function Login() {
           border: 1px solid rgba(255,255,255,0.15);
         }
 
-        /* RIGHT PANEL */
         .auth-panel-right {
           flex: 1.1;
           background: #1a1612;
@@ -291,14 +294,8 @@ export default function Login() {
           padding: 48px 40px;
         }
 
-        .form-wrapper {
-          width: 100%;
-          max-width: 340px;
-        }
-
-        .form-header {
-          margin-bottom: 32px;
-        }
+        .form-wrapper { width: 100%; max-width: 340px; }
+        .form-header { margin-bottom: 32px; }
 
         .form-title {
           font-family: 'Syne', sans-serif;
@@ -309,10 +306,7 @@ export default function Login() {
           margin-bottom: 6px;
         }
 
-        .form-subtitle {
-          font-size: 14px;
-          color: rgba(255,255,255,0.45);
-        }
+        .form-subtitle { font-size: 14px; color: rgba(255,255,255,0.45); }
 
         .error-banner {
           background: rgba(220, 60, 60, 0.15);
@@ -327,17 +321,8 @@ export default function Login() {
           gap: 8px;
         }
 
-        .auth-form {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-        }
-
-        .field-group {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-        }
+        .auth-form { display: flex; flex-direction: column; gap: 20px; }
+        .field-group { display: flex; flex-direction: column; gap: 8px; }
 
         .field-label {
           font-size: 13px;
@@ -346,11 +331,7 @@ export default function Login() {
           letter-spacing: 0.3px;
         }
 
-        .input-wrap {
-          position: relative;
-          display: flex;
-          align-items: center;
-        }
+        .input-wrap { position: relative; display: flex; align-items: center; }
 
         .input-icon {
           position: absolute;

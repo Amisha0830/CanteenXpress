@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const aboutController = require("../controllers/aboutController");
-// const { getAboutPage } = require("../controllers/aboutController");
 
-// router.get("/", getAboutPage);
-router.get("/about", aboutController.getAboutPage);
+// ✅ Fixed: should be "/" not "/about"
+// because it's mounted at /about in server.js
+router.get("/", aboutController.getAboutPage);
 
 module.exports = router;
