@@ -1161,7 +1161,7 @@ function renderAboutPage(data) {
       </div>
     </div>
   </footer>
-
+<script>
  // Auth check
 const REACT_URL = "http://localhost:3000";
 const API_URL = "http://localhost:5000/api";
@@ -1193,7 +1193,7 @@ function logout() {
 }
 
 document.addEventListener("DOMContentLoaded", initAuth);
-
+</script>
 </body>
 </html>`;
 }
