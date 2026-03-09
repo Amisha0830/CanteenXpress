@@ -1,13 +1,13 @@
+// auth.controller.js --> this file controls the logic of the routes.
+
+
 const User = require("../models/user"); // to talk to mongodb
 const generateToken = require("../utils/generateToken"); // creates jwt
 const { validationResult } = require("express-validator"); //check input errors
 
 
-//A request comex in --> Validate --> talk to db --> send the response back to client
+//A request comes in --> Validate --> talk to db --> send the response back to client
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
-// @access  Public
 const register = async (req, res, next) => {
   try {
     // Validation errors
@@ -21,9 +21,7 @@ const register = async (req, res, next) => {
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Email already registered" });
+      return res.status(400).json({ success: false, message: "Email already registered" });
     }
 
     // Create user (password will be hashed by pre-save hook)
@@ -37,7 +35,7 @@ const register = async (req, res, next) => {
     });
 
     const token = generateToken(user._id, user.role);
-
+// about api --> 201 --> sucess -> : A new resource has been created (successful POST request)
     res.status(201).json({
       success: true,
       message: "Registration successful",
@@ -48,7 +46,7 @@ const register = async (req, res, next) => {
         email: user.email,
         role: user.role,
         phone: user.phone,
-        password: undefined, // never send password back
+        password: undefined, //paqssword will not be shown in db
       },
     });
   } catch (error) {
@@ -56,13 +54,12 @@ const register = async (req, res, next) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
+
 const login = async (req, res, next) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      //about api --> 400 --> invalid req body or missing parameters in request
       return res.status(400).json({ success: false, errors: errors.array() });
     }
 
@@ -71,28 +68,24 @@ const login = async (req, res, next) => {
     // Find user and include password for comparison
     const user = await User.findOne({ email }).select("+password");
     if (!user) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid email or password" });
+      //401 --> requesting a resource that require authentication
+      return res.status(401).json({ success: false, message: "Invalid email or password" });
     }
 
     // Check if account is active
     if (!user.isActive) {
-      return res
-        .status(403)
-        .json({ success: false, message: "Account has been deactivated" });
+      //403--> User does not have required permission to access the resource
+      return res.status(403).json({ success: false, message: "Account has been deactivated" });
     }
 
     // Compare password
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid email or password" });
+      return res.status(401).json({ success: false, message: "Invalid email or password" });
     }
 
     const token = generateToken(user._id, user.role);
-
+//200 -> a successful get request
     res.status(200).json({
       success: true,
       message: "Login successful",
@@ -111,16 +104,13 @@ const login = async (req, res, next) => {
   }
 };
 
-// @desc    Get logged in user profile
-// @route   GET /api/auth/me
-// @access  Private
+
 const getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
+      // 404-->invalid url or resource does not exist
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
     res.status(200).json({
@@ -139,9 +129,7 @@ const getMe = async (req, res, next) => {
   }
 };
 
-// @desc    Update user profile
-// @route   PUT /api/auth/update-profile
-// @access  Private
+
 const updateProfile = async (req, res, next) => {
   try {
     const { name, phone } = req.body;
@@ -168,9 +156,7 @@ const updateProfile = async (req, res, next) => {
   }
 };
 
-// @desc    Change password
-// @route   PUT /api/auth/change-password
-// @access  Private
+
 const changePassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword } = req.body;
@@ -179,17 +165,13 @@ const changePassword = async (req, res, next) => {
 
     const isMatch = await user.matchPassword(currentPassword);
     if (!isMatch) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Current password is incorrect" });
+      return res.status(400).json({ success: false, message: "Current password is incorrect" });
     }
 
     user.password = newPassword;
     await user.save();
 
-    res
-      .status(200)
-      .json({ success: true, message: "Password changed successfully" });
+    res.status(200).json({ success: true, message: "Password changed successfully" });
   } catch (error) {
     next(error);
   }
